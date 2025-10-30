@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatBuddy - Your Friendly Bot 🤖</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      color: #fff;
+    }
+    .chat-container {
+      background: rgba(255, 255, 255, 0.1);
+      width: 400px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      background: #5a44a3;
+      padding: 15px;
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #4e3e8c;
+      user-select:none;
+    }
+    #chatbox {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 14px;
+      line-height: 1.4;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .userText span, .botText span {
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 75%;
+      display: inline-block;
+      word-wrap: break-word;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .userText {
+      align-self: flex-end;
+    }
+    .userText span {
+      background: #6c63ff;
+      color: white;
+    }
+    .botText {
+      align-self: flex-start;
+    }
+    .botText span {
+      background: #fff;
+      color: #333;
+    }
+    .chat-input-area {
+      display: flex;
+      border-top: 2px solid #4e3e8c;
+      background: #5a44a3;
+      padding: 10px 15px;
+    }
+    #userInput {
+      flex-grow: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #333;
+    }
+    #sendBtn {
+      margin-left: 10px;
+      background: #06d6a0;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #sendBtn:hover {
+      background: #05b583;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">ChatBuddy 🤖</div>
+    <div id="chatbox">
+      <p class="botText"><span>Hey there! I'm ChatBuddy. Ask me anything.</span></p>
+    </div>
+    <div class="chat-input-area">
+      <input id="userInput" type="text" placeholder="Type your message here..." autocomplete="off" />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatbox = document.getElementById("chatbox");
+    const inputBox = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function appendMessage(message, className) {
+      const p = document.createElement("p");
+      p.className = className;
+      const span = document.createElement("span");
+      span.innerText = message;
+      p.appendChild(span);
+      chatbox.appendChild(p);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const userText = inputBox.value.trim();
+      if (userText === "") return;
+      appendMessage(userText, "userText");
+      inputBox.value = "";
+      try {
+        const response = await fetch(`/get?msg=${encodeURIComponent(userText)}`);
+        const data = await response.json();
+        appendMessage(data, "botText");
+      } catch (error) {
+        appendMessage("Oops! Something went wrong.", "botText");
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    inputBox.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
