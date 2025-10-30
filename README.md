@@ -45,5 +45,6 @@ curl -s -X POST http://127.0.0.1:5000/chat \
 
 
 ## Output Screen
-![Uploading Screenshot 2025-10-30 115533.png…]()
+![Chatbot Screenshot](![Uploading Screenshot 2025-10-30 115533.png…]())
+
 
