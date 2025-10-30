@@ -41,4 +41,8 @@ curl -s -X POST http://127.0.0.1:5000/chat \
 - The bot is intentionally simple; extend `generate_response()` in `app.py` as needed.
 - The server binds to `127.0.0.1:5000`. Change in `app.run(...)` if required.
 "# ChatBot" 
-"# Simple-chatbot" 
+"# Simple-chatbot"
+
+
+##Output Screen
+
